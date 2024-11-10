@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie Care</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            height: 100vh;
+        }
+        .menu {
+            flex: 0 0 46%; /* Fixed width of 46% */
+            background: url('homepage_image.jpeg') no-repeat center center;
+            background-size: cover;
+        }
+        .mainContent {
+            flex: 1; /* Takes the remaining space */
+            background-color: black; /* Optional: set background color */
+            color: white; /* Optional: set text color */
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 20px; /* Add some padding */
+        }
+        h1 {
+            font-size: 5rem; /* Makes the text bigger */
+            font-weight: bold;
+            margin: 0;
+            padding-left: 10px; /* Adds some left padding */
+        }
+        h2 {
+            display: inline;
+            font-size: 1.8em;
+            padding-left: 10px;
+            margin: 0;
+        }
+        .color-changing-text {
+            display: inline-block;
+            font-size: 3em;
+            font-weight: bold;
+            letter-spacing: 2px;
+            transition: color 1s ease, transform 0.5s ease-in-out;
+        }
+        .content {
+            display: inline-block;
+            padding-left: 10px; /* Add padding to the content */
+        }
+        .btn {
+            background-color: pink; /* Button background color */
+            color: black;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        .btn:hover {
+            background-color: #FDFCF4; /* Button hover color */
+        }
+    </style>
+</head>
+<body>
+    <div class="menu"></div>
+    <div class="mainContent">
+        <div class="content">
+            <h1>CALORIE</h1>
+            <h1>CARE</h1>
+            <br>
+            <h2>Help us make you</h2><h2 id="text">HEALTHIER</h2>
+            <br><br><br>
+            <button class="btn" onclick="navigateToPage1()">Let's Get Started</button>
+        </div>
+    </div>
+
+    <script>
+        const words = ["HEALTHIER.", "BETTER.", "STRONGER.", "ENERGETIC.", "NOURISHED."];
+        const colors = ["orange", "deeppink", "lightblue", "purple", "yellow"]; 
+        let index = 0;
+        const textElement = document.getElementById("text");
+
+        function changeText() {
+            // Reset animation to trigger it again
+            textElement.style.animation = "none";
+            // Small delay to reset the animation
+            setTimeout(() => {
+                textElement.style.animation = "fadeInOut 2s ease-in-out"; // Apply animation again
+            }, 50);
+
+            // Change the word and color
+            textElement.textContent = words[index];
+            textElement.style.color = colors[index]; // Change color based on the word
+            index = (index + 1) % words.length;  // Move to the next word
+        }
+
+        // Change text every 2 seconds (same time as the animation duration)
+        setInterval(changeText, 2000);  // Changes text every 2 seconds
+
+        function navigateToPage1() {
+            window.location.href = 'page1.html'; // Redirect to page1.html
+        }
+    </script>
+</body>
+</html>

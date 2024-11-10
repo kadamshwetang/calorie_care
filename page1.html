@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Multi-step Form</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    
+    .form-container {
+      width: 300px;
+      text-align: center;
+    }
+    
+    .question {
+      display: none; /* Hide all questions by default */
+    }
+    
+    .question.active {
+      display: block; /* Show the active question */
+    }
+    
+    .option {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 10px 0;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+    
+    .option:hover {
+      background-color: #444;
+      border-color: white;
+    }
+    
+    .option.selected {
+      background-color: #007bff; /* Highlight selected option */
+      border-color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <div class="question active" id="gender-question">
+      <h2>What is your gender?</h2>
+      <div class="option" onclick="selectOption('gender', 'male')">Male</div>
+      <div class="option" onclick="selectOption('gender', 'female')">Female</div>
+    </div>
+    
+    <div class="question" id="age-question">
+      <h2>What is your age?</h2>
+      <input type="number" id="age" placeholder="Enter your age">
+      <div class="option" onclick="nextQuestion('age')">Submit</div>
+    </div>
+    
+    <div class="question" id="weight-question">
+      <h2>What is your weight (kg)?</h2>
+      <input type="number" id="weight" placeholder="Enter your weight">
+      <div class="option" onclick="nextQuestion('weight')">Submit</div>
+    </div>
+    
+    <div class="question" id="height-question">
+      <h2>What is your height (cm)?</h2>
+      <input type="number" id="height" placeholder="Enter your height">
+      <div class="option" onclick="nextQuestion('height')">Submit</div>
+    </div>
+    
+    <div class="question" id="goal-question">
+      <h2>Select your goal:</h2>
+      <div class="option" onclick="selectOption('goal', 'gain')">Gain Weight</div>
+      <div class="option" onclick="selectOption('goal', 'lose')">Lose Weight</div>
+      <div class="option" onclick="selectOption('goal', 'maintain')">Maintain Weight</div>
+    </div>
+    
+    <div class="question" id="diet-question">
+      <h2>Select your dietary preference:</h2>
+      <div class="option" onclick="selectOption('diet', 'veg')">Vegetarian</div>
+      <div class="option" onclick="selectOption('diet', 'non-veg')">Non-Vegetarian</div>
+      <div class="option" onclick="selectOption('diet', 'vegan')">Vegan</div>
+    </div>
+    
+    <div class="question" id="allergy-question">
+      <h2>Select your food allergies:</h2>
+      <div class="option" onclick="selectOption('allergy', 'dairy')">Dairy</div>
+      <div class="option" onclick="selectOption('allergy', 'nuts')">Nuts</div>
+      <div class="option" onclick="selectOption('allergy', 'gluten')">Gluten</div>
+      <div class="option" onclick="selectOption('allergy', 'none')">None</div>
+    </div>
+    
+    <div class="question" id="health-condition-question">
+      <h2>Any specific health conditions?</h2>
+      <input type="text" id="health-condition" placeholder="e.g., diabetes">
+      <div class="option" onclick="nextQuestion('health-condition')">Submit</div>
+    </div>
+    
+    <div class="question" id="summary-question">
+      <h2>Summary of your inputs:</h2>
+      <div id="summary"></div>
+      <div class="option" onclick="submitForm()">Submit All</div>
+    </div>
+  </div>
+
+  <script>
+    const answers = {};
+
+    function selectOption(question, answer) {
+      answers[question] = answer;
+      nextQuestion(question);
+    }
+
+    function nextQuestion(currentQuestion) {
+      const current = document.getElementById(currentQuestion + '-question');
+      current.classList.remove('active');
+      
+      const next = current.nextElementSibling;
+      if (next) {
+        next.classList.add('active');
+      } else {
+        showSummary();
+      }
+    }
+
+    function showSummary() {
+      const summaryDiv = document.getElementById('summary');
+      summaryDiv.innerHTML = `
+        <p>Gender: ${answers.gender || 'Not specified'}</p>
+        <p>Age: ${document.getElementById('age').value || 'Not specified'}</p>
+        <p>Weight: ${document.getElementById('weight').value || 'Not specified'} kg</p>
+        <p>Height: ${document.getElementById('height').value || 'Not specified'} cm</p>
+        <p>Goal: ${answers.goal || 'Not specified'}</p>
+        <p>Diet: ${answers.diet || 'Not specified'}</p>
+        <p>Allergies: ${answers.allergy || 'None'}</p>
+        <p>Health Conditions: ${document.getElementById('health-condition').value || 'None'}</p>
+      `;
+      document.getElementById('summary-question').classList.add('active');
+    }
+
+    function submitForm() {
+      // Here you can handle the form submission, e.g., send the data to a server
+      console.log('Form submitted with data:', answers);
+      alert('Form submitted! Check console for data.');
+    }
+  </script>
+</body>
+</html>
