@@ -117,37 +117,80 @@
     }
 
     function nextQuestion(currentQuestion) {
-      const current = document.getElementById(currentQuestion + '-question');
-      current.classList.remove('active');
-      
-      const next = current.nextElementSibling;
-      if (next) {
-        next.classList.add('active');
-      } else {
-        showSummary();
-      }
+        const current = document.getElementById(currentQuestion + '-question');
+        
+        // Store input values in the answers object
+        if (currentQuestion === 'age') {
+            answers.age = document.getElementById('age').value; // Save age
+        } else if (currentQuestion === 'weight') {
+            answers.weight = document.getElementById('weight').value; // Save weight
+        } else if (currentQuestion === 'height') {
+            answers.height = document.getElementById('height').value; // Save height
+        } else if (currentQuestion === 'health-condition') {
+            answers.healthCondition = document.getElementById('health-condition').value; // Save health condition
+        }
+        
+        // Hide the current question and show the next one
+        current.classList.remove('active');
+        const next = current.nextElementSibling;
+        if (next) {
+            next.classList.add('active');
+    
+            // Focus on the input field of the next question, if it exists
+            const inputField = next.querySelector('input');
+            if (inputField) {
+                inputField.focus(); // Set focus to the input field
+            }
+        } else {
+            showSummary(); // If there are no more questions, show the summary
+        }
     }
 
     function showSummary() {
-      const summaryDiv = document.getElementById('summary');
-      summaryDiv.innerHTML = `
-        <p>Gender: ${answers.gender || 'Not specified'}</p>
-        <p>Age: ${document.getElementById('age').value || 'Not specified'}</p>
-        <p>Weight: ${document.getElementById('weight').value || 'Not specified'} kg</p>
-        <p>Height: ${document.getElementById('height').value || 'Not specified'} cm</p>
-        <p>Goal: ${answers.goal || 'Not specified'}</p>
-        <p>Diet: ${answers.diet || 'Not specified'}</p>
-        <p>Allergies: ${answers.allergy || 'None'}</p>
-        <p>Health Conditions: ${document.getElementById('health-condition').value || 'None'}</p>
-      `;
-      document.getElementById('summary-question').classList.add('active');
-    }
+        const summaryDiv = document.getElementById('summary');
+        summaryDiv.innerHTML = `
+          <p>Gender: ${answers.gender || 'Not specified'}</p>
+          <p>Age: ${answers.age || 'Not specified'}</p>
+          <p>Weight: ${answers.weight || 'Not specified'} kg</p>
+          <p>Height: ${answers.height || 'Not specified'} cm</p>
+          <p>Goal: ${answers.goal || 'Not specified'}</p>
+          <p>Diet: ${answers.diet || 'Not specified'}</p>
+          <p>Allergies: ${answers.allergy || 'None'}</p>
+          <p>Health Conditions: ${answers.healthCondition || 'None'}</p>
+        `;
+        document.getElementById('summary-question').classList.add('active');
+      }
 
     function submitForm() {
       // Here you can handle the form submission, e.g., send the data to a server
       console.log('Form submitted with data:', answers);
       alert('Form submitted! Check console for data.');
     }
+
+    // Add event listeners for the input fields
+document.getElementById('age').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+      nextQuestion('age');
+    }
+  });
+  
+  document.getElementById('weight').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+      nextQuestion('weight');
+    }
+  });
+  
+  document.getElementById('height').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+      nextQuestion('height');
+    }
+  });
+  
+  document.getElementById('health-condition').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+      nextQuestion('health-condition');
+    }
+  });
   </script>
 </body>
 </html>
