@@ -104,7 +104,8 @@
     <div class="question" id="summary-question">
       <h2>Summary of your inputs:</h2>
       <div id="summary"></div>
-      <div class="option" onclick="submitForm()">Submit All</div>
+      <div class="option" onclick="retakeQuiz()">Retake Quiz</div>
+    <div class="option" onclick="generateMealPlan()">Generate Meal Plan</div>
     </div>
   </div>
 
@@ -178,44 +179,35 @@
         }
         document.getElementById('summary-question').classList.add('active');
     }
-
-    // Submit function to log data
-    function submitForm() {
-      console.log('Form submitted with data:', answers);
-      alert('Form submitted! Check console for data.');
+    function retakeQuiz() {
+        // Reset the answers object
+        for (let key in answers) {
+            answers[key] = 'Not specified'; // Reset each answer to its initial state
+        }
+        
+        // Hide the summary question and show the first question
+        document.getElementById('summary-question').classList.remove('active');
+        document.getElementById('gender-question').classList.add('active');
+        
+        // Optionally, clear the input fields
+        document.getElementById('age').value = '';
+        document.getElementById('weight').value = '';
+        document.getElementById('height').value = '';
+        document.getElementById('health-condition').value = '';
+    
+        // Reset any selected options (if applicable)
+        const options = document.querySelectorAll('.option');
+        options.forEach(option => {
+            option.classList.remove('selected');
+        });
+    
+        console.log('Quiz retaken.'); // Debugging line
     }
-
-    // Automatically select options based on the stored data
-    function prefillForm() {
-      if (answers.gender) {
-        document.getElementById(answers.gender + '-option').classList.add('selected');
-      }
-      if (answers.goal) {
-        document.getElementById(answers.goal + '-option').classList.add('selected');
-      }
-      if (answers.diet) {
-        document.getElementById(answers.diet + '-option').classList.add('selected');
-      }
-      if (answers.allergy) {
-        document.getElementById(answers.allergy + '-option').classList.add('selected');
-      }
-
-      if (answers.age) {
-        document.getElementById('age').value = answers.age;
-      }
-      if (answers.weight) {
-        document.getElementById('weight').value = answers.weight;
-      }
-      if (answers.height) {
-        document.getElementById('height').value = answers.height;
-      }
-      if (answers.healthCondition) {
-        document.getElementById('health-condition').value = answers.healthCondition;
-      }
+    
+    function generateMealPlan() {
+        alert('Meal plan generated!'); // Display a message indicating the meal plan has been generated
+        console.log('Meal plan generation initiated.'); // Debugging line
     }
-
-    // Call prefillForm to pre-fill data when the page is loaded
-    window.onload = prefillForm;
 
     // Add event listeners for the input fields
 document.getElementById('age').addEventListener('keypress', function(event) {
