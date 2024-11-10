@@ -109,7 +109,16 @@
   </div>
 
   <script>
-    const answers = {};
+    const answers = {
+        gender: 'Not specified',
+        age: 'Not specified',
+        weight: 'Not specified',
+        height: 'Not specified',
+        goal: 'Not specified',
+        diet: 'Not specified',
+        allergy: 'None',
+        healthCondition: 'None'
+    }
 
     function selectOption(question, answer) {
       answers[question] = answer;
@@ -133,7 +142,9 @@
         // Hide the current question and show the next one
         current.classList.remove('active');
         const next = current.nextElementSibling;
-        if (next) {
+
+        
+        if (next && next.id !== 'summary-question') {
             next.classList.add('active');
     
             // Focus on the input field of the next question, if it exists
@@ -142,30 +153,69 @@
                 inputField.focus(); // Set focus to the input field
             }
         } else {
+            console.log('All questions answered, showing summary:', answers); // Debugging line
             showSummary(); // If there are no more questions, show the summary
         }
+
     }
 
+    // Function to show the summary of all inputs
     function showSummary() {
         const summaryDiv = document.getElementById('summary');
-        summaryDiv.innerHTML = `
-          <p>Gender: ${answers.gender || 'Not specified'}</p>
-          <p>Age: ${answers.age || 'Not specified'}</p>
-          <p>Weight: ${answers.weight || 'Not specified'} kg</p>
-          <p>Height: ${answers.height || 'Not specified'} cm</p>
-          <p>Goal: ${answers.goal || 'Not specified'}</p>
-          <p>Diet: ${answers.diet || 'Not specified'}</p>
-          <p>Allergies: ${answers.allergy || 'None'}</p>
-          <p>Health Conditions: ${answers.healthCondition || 'None'}</p>
-        `;
+        if (Object.keys(answers).length === 0) {
+            summaryDiv.innerHTML = `<p>No data provided.</p>`;
+        } else {
+            summaryDiv.innerHTML = `
+              <p>Gender: ${answers.gender || 'Not specified'}</p>
+              <p>Age: ${answers.age || 'Not specified'}</p>
+              <p>Weight: ${answers.weight || 'Not specified'} kg</p>
+              <p>Height: ${answers.height || 'Not specified'} cm</p>
+              <p>Goal: ${answers.goal || 'Not specified'}</p>
+              <p>Diet: ${answers.diet || 'Not specified'}</p>
+              <p>Allergies: ${answers.allergy || 'None'}</p>
+              <p>Health Conditions: ${answers.healthCondition || 'None'}</p>
+            `;
+        }
         document.getElementById('summary-question').classList.add('active');
-      }
+    }
 
+    // Submit function to log data
     function submitForm() {
-      // Here you can handle the form submission, e.g., send the data to a server
       console.log('Form submitted with data:', answers);
       alert('Form submitted! Check console for data.');
     }
+
+    // Automatically select options based on the stored data
+    function prefillForm() {
+      if (answers.gender) {
+        document.getElementById(answers.gender + '-option').classList.add('selected');
+      }
+      if (answers.goal) {
+        document.getElementById(answers.goal + '-option').classList.add('selected');
+      }
+      if (answers.diet) {
+        document.getElementById(answers.diet + '-option').classList.add('selected');
+      }
+      if (answers.allergy) {
+        document.getElementById(answers.allergy + '-option').classList.add('selected');
+      }
+
+      if (answers.age) {
+        document.getElementById('age').value = answers.age;
+      }
+      if (answers.weight) {
+        document.getElementById('weight').value = answers.weight;
+      }
+      if (answers.height) {
+        document.getElementById('height').value = answers.height;
+      }
+      if (answers.healthCondition) {
+        document.getElementById('health-condition').value = answers.healthCondition;
+      }
+    }
+
+    // Call prefillForm to pre-fill data when the page is loaded
+    window.onload = prefillForm;
 
     // Add event listeners for the input fields
 document.getElementById('age').addEventListener('keypress', function(event) {
